@@ -1,26 +1,453 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Custom variants for dark/light control */
+@custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(:not(.dark) *));
 
+/* Theme configuration */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Color mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-journey: var(--journey-solid);
+  --color-journey-foreground: var(--journey-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-adventure: var(--adventure-solid);
+  --color-adventure-foreground: var(--adventure-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Border radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Root light theme */
+:root {
+  /* Core settings */
+  --radius: 0.625rem;
+  --transition-duration: 150ms;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Color palette - Light mode */
+  --background: oklch(0.985 0.01 250);
+  --foreground: oklch(0.15 0.04 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.04 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.04 265);
+
+  /* Journey colors (Ocean Blue - representing travel and exploration) */
+  --journey-solid: oklch(0.55 0.15 230);
+  --journey-gradient: linear-gradient(
+    135deg,
+    oklch(0.55 0.15 230),
+    oklch(0.6 0.12 210)
+  );
+  --journey-foreground: oklch(0.98 0.01 250);
+
+  /* Secondary colors (Warm Sand) */
+  --secondary: oklch(0.93 0.03 70);
+  --secondary-foreground: oklch(0.18 0.04 265);
+
+  /* Muted colors */
+  --muted: oklch(0.95 0.01 250);
+  --muted-foreground: oklch(0.45 0.03 260);
+
+  /* Adventure colors (Tropical Teal - representing adventure and destinations) */
+  --adventure-solid: oklch(56.643% 0.11043 227.954);
+  --adventure-gradient: linear-gradient(
+    135deg,
+    oklch(58.624% 0.10416 223.082),
+    oklch(61.061% 0.10525 190.674)
+  );
+  --adventure-foreground: oklch(0.98 0.01 250);
+
+  /* Destructive */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+
+  /* Borders and inputs */
+  --border: oklch(0.9 0.01 255);
+  --input: oklch(0.9 0.01 255);
+  --ring: oklch(0.55 0.12 225);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Dark theme */
+.dark {
+  /* Color palette - Dark mode */
+  --background: oklch(0.13 0.04 265);
+  --foreground: oklch(0.97 0.02 255);
+  --card: oklch(0.17 0.04 265);
+  --card-foreground: oklch(0.97 0.02 255);
+  --popover: oklch(0.17 0.04 265);
+  --popover-foreground: oklch(0.97 0.02 255);
+
+  /* Journey colors (Deep Ocean Blue with cyan accent) */
+  --journey-solid: oklch(0.6 0.18 220);
+  --journey-gradient: linear-gradient(
+    135deg,
+    oklch(0.6 0.18 220),
+    oklch(0.65 0.16 200)
+  );
+  --journey-foreground: oklch(0.98 0.01 250);
+
+  /* Adventure colors (Rich Sunset - warm exploration accent) */
+  --adventure-solid: oklch(0.67 0.23 38);
+  --adventure-gradient: linear-gradient(
+    135deg,
+    oklch(0.72 0.24 42),
+    oklch(0.64 0.25 30)
+  );
+  --adventure-foreground: oklch(0.98 0.01 250);
+
+  /* Secondary colors */
+  --secondary: oklch(0.25 0.05 260);
+  --secondary-foreground: oklch(0.9 0.02 250);
+
+  /* Muted colors */
+  --muted: oklch(0.22 0.04 265);
+  --muted-foreground: oklch(0.7 0.05 265);
+
+  /* Destructive */
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+
+  /* Borders and inputs */
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.6 0.15 220);
+
+  /* Depth + Glow shadows with travel theme */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 20px rgb(0 0 0 / 0.5), 0 0 20px rgb(74 158 255 / 0.15);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+}
+
+/* Base layer styles */
+@layer base {
+  /* Universal styles */
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring);
+    outline-width: 2px;
+    outline-offset: 2px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* HTML setup */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  /* Body setup */
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    transition:
+      background-color var(--transition-duration) var(--transition-timing),
+      color var(--transition-duration) var(--transition-timing);
+  }
+
+  /* Typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    line-height: 1.6;
+  }
+
+  /* Links - ONLY apply gradient to plain text links, NOT buttons */
+  a {
+    transition: opacity var(--transition-duration) var(--transition-timing);
+  }
+
+  a:where(
+    :not(button):not([role="button"]):not(.btn):not([class*="button"]):not(
+        [class*="Button"]
+      )
+  ) {
+    text-decoration: none;
+    background: var(--adventure-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  a:where(
+      :not(button):not([role="button"]):not(.btn):not([class*="button"]):not(
+          [class*="Button"]
+        )
+    ):hover {
+    opacity: 0.8;
+  }
+
+  /* Focus visible */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Button reset - ensure proper visibility and prevent gradient bleeding */
+  button,
+  [role="button"],
+  .btn,
+  [class*="button"],
+  [class*="Button"] {
+    font-family: inherit;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  /* Explicitly prevent any gradient or transparent color on buttons and their children */
+  button,
+  button *,
+  [role="button"],
+  [role="button"] *,
+  .btn,
+  .btn *,
+  [class*="button"],
+  [class*="button"] *,
+  [class*="Button"],
+  [class*="Button"] * {
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+    -webkit-text-fill-color: unset !important;
+  }
+
+  /* Ensure button text inherits proper color */
+  button,
+  [role="button"],
+  .btn,
+  [class*="button"],
+  [class*="Button"] {
+    color: currentColor;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* Selection styling */
+  ::selection {
+    background: oklch(0.55 0.15 230 / 0.25);
+  }
+
+  .dark ::selection {
+    background: oklch(0.6 0.18 220 / 0.3);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.3 0.08 220 / 0.4);
+    border-radius: 8px;
+    transition: background var(--transition-duration) var(--transition-timing);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.45 0.12 225 / 0.6);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: oklch(0.4 0.1 220 / 0.4);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.55 0.15 220 / 0.6);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Utility layer */
+@layer utilities {
+  /* Glass morphism effect */
+  .glass {
+    background: oklch(0.15 0.04 265 / 0.6);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid var(--border);
+  }
+
+  .light .glass {
+    background: oklch(0.98 0.01 250 / 0.6);
+  }
+
+  /* Travel glow effect */
+  .travel-glow {
+    box-shadow:
+      0 0 10px oklch(0.55 0.15 230 / 0.5),
+      0 0 25px oklch(0.6 0.12 210 / 0.25);
+  }
+
+  .dark .travel-glow {
+    box-shadow:
+      0 0 15px oklch(0.6 0.18 220 / 0.6),
+      0 0 30px oklch(0.65 0.16 200 / 0.3);
+  }
+
+  /* Fade in animation */
+  .fade-in {
+    animation: fadeIn 0.6s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Journey text gradient */
+  .text-gradient {
+    background: var(--journey-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Adventure text gradient */
+  .text-adventure {
+    background: var(--adventure-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* GPU acceleration hint */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Text balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Component layer */
+@layer components {
+  /* Elevated card effect */
+  .elevated {
+    box-shadow: var(--shadow-lg);
+    transition: box-shadow var(--transition-duration) var(--transition-timing);
+  }
+
+  .elevated:hover {
+    box-shadow:
+      0 12px 30px rgb(0 0 0 / 0.2),
+      0 0 20px oklch(0.6 0.12 210 / 0.15);
+  }
+
+  .dark .elevated:hover {
+    box-shadow:
+      0 12px 30px rgb(0 0 0 / 0.4),
+      0 0 20px oklch(0.65 0.16 200 / 0.2);
+  }
+
+  /* Gradient border effect */
+  .gradient-border {
+    border: 2px solid transparent;
+    background:
+      linear-gradient(var(--background), var(--background)) padding-box,
+      var(--journey-gradient) border-box;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Container queries support */
+  .container-aware {
+    container-type: inline-size;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+    color: inherit !important;
+    background: none !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
